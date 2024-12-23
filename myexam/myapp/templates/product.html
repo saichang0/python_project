@@ -1,0 +1,81 @@
+{% extends 'index.html' %}
+
+{% block content %}
+<div class="flex flex-wrap justify-center gap-4 container p-4 bg-orange-300">
+    {% for product in products %}
+    <div class="card" style="width: 12rem; border: 0;">
+        <div class="flex flex-col justify-center items-center">
+            <!-- Trigger modal with product image -->
+            <img src="{{ product.img }}" class="card-img-top cursor-pointer" alt="Image of {{ product.name }}"
+                data-bs-toggle="modal" data-bs-target="#productModal-{{ forloop.counter }}" />
+
+            <!-- Trigger modal with cart icon -->
+            <div class="border-2 rounded-full p-2 px-2.5 bg-slate-500 hover:bg-lime-100 text-center transition duration-300 ease-in-out cursor-pointer"
+                data-bs-toggle="modal" data-bs-target="#productModal-{{ forloop.counter }}">
+                <i class="fa-solid fa-cart-plus mx-1"></i>
+            </div>
+        </div>
+        <div class="card-body text-center">
+            <h5 class="card-title font-bold text-lg">{{ product.name }}</h5>
+            <p class="card-text">{{ product.price }}</p>
+        </div>
+    </div>
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="productModal-{{ forloop.counter }}" tabindex="-1"
+        aria-labelledby="modalLabel-{{ forloop.counter }}" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 80%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel-{{ forloop.counter }}">{{ product.name }}</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="d-flex flex-column flex-lg-row justify-content-between align-items-start">
+                    <!-- Left Section: Product Image -->
+                    <div class="modal-body" style="max-width: 40%;">
+                        <img src="{{ product.img }}" class="img-fluid w-100 rounded" alt="Image of {{ product.name }}">
+                    </div>
+                    <!-- Right Section: Description and Price -->
+                    <div class="flex-grow-1 modal-dialog modal-fullscreen d-flex justify-content-around items-end"
+                        style="max-width: 100%" ;>
+                        <div class="" style="max-width: 60%">
+                            <h1 class="fw-bold text-xl font-bold uppercase">Lak: {{ product.price }} </h1>
+                            <p class="text-red-600 ">50% off</p>
+                            <p class="text-sm font-thin text-start text-wrap mb-5">{{ product.description }}</p>
+                            <hr>
+                            <div class="d-flex my-5" style="max-width: 25%">
+                                {% for product in products%}
+                                <img src="{{product.img}}" alt="">
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="modal-dialog w-100 h-96 p-2" id="exampleModal" tabindex="-1"
+                            aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog d-flex flex-column align-items-center justify-content-center w-100 mt-5"
+                                style="max-width: 100%;">
+                                <div class="modal-content w-100 h-auto mt-5 d-flex flex-column align-items-start">
+                                    <h1 class="mb-3 font-bold text-black-500">Quantity</h1>
+                                    <form class="flex justify-content-between items-center w-20" method="post">
+                                        {% csrf_token %}
+                                        <button class="w-5 bg-slate-500 py-1 flex justify-center items-center"
+                                            type="submit" name="minus"><i class="fa-solid fa-minus"></i></button>
+                                        <span>{{ result }}</span>
+                                        <button class="w-5 bg-slate-500 justify-center items-center" type="submit"
+                                            name="plus"><i class="fa-solid fa-plus"></i></button>
+                                    </form>
+                                    <p class="mb-4">Available</p>
+                                    <button type="button" class="btn btn-secondary w-100 mb-2"
+                                        data-bs-dismiss="modal">BUY NOW</button>
+                                    <button type="button" class="btn btn-primary w-100">Add to Cart</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
